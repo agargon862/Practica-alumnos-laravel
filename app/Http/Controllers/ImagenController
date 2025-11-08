@@ -1,0 +1,30 @@
+<?php
+namespace App\Http\Controllers;
+
+use App\Models\Alumno;
+
+class ImagenController extends Controller
+{
+
+    function fotografia($id)
+    {
+        $alumno = Alumno::find($id);
+        if ($alumno == null || $alumno->fotografia == null) {
+            return response()->file(public_path('assets/img/noimage.jpg'));
+        }
+        
+        return response()->file(storage_path('app/private') . '/' . $alumno->fotografia);
+    }
+
+
+    function pdf($id)
+    {
+        $alumno = Alumno::find($id);
+        if ($alumno == null || $alumno->pdf_cv == null) {
+            abort(404, 'PDF no encontrado');
+        }
+        
+        // Devolver el archivo PDF
+        return response()->file(storage_path('app/private') . '/' . $alumno->pdf_cv);
+    }
+}
